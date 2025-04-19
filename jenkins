@@ -1,0 +1,41 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Clone') {
+            steps {
+                script {
+                    // Clone the latest code
+                    git branch: 'main', url: 'https://github.com/anmmoinuddin/OSTAD-Assignment-module-3.git'
+                }
+            }
+        }
+        
+        stage('Install') {
+            steps {
+                script {
+                    // Install dependencies
+                    sh 'npm install'
+                }
+            }
+        }
+        
+        stage('Test') {
+            steps {
+                script {
+                    // Run tests
+                    sh 'npm run check'
+                }
+            }
+        }
+    }
+    
+    post {
+        always {
+            echo "Pipeline completed."
+        }
+        failure {
+            echo "Pipeline failed."
+        }
+    }
+}
